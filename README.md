@@ -26,3 +26,8 @@ python src/video_emotion_color_demo.py
 # Train lại
 
 python src/train_emotion_classifier.py
+
+# Tài liệu tham khảo
+
+https://github.com/oarriaga/face_classification
+https://github.com/YapaLab/yolo-face/tree/dev

@@ -28,18 +28,13 @@ print("🔄 Đang load emotion model...")
 # Kiểm tra file tồn tại
 if not os.path.exists(emotion_model_path):
     print(f"❌ File model không tồn tại: {emotion_model_path}")
-    print("Kiểm tra đường dẫn tương đối từ thư mục script (cd đến thư mục gốc project và chạy).")
     exit()
 
 try:
     emotion_classifier = load_model(emotion_model_path, compile=False, safe_mode=False, custom_objects={})
     print("✅ Emotion model loaded thành công")
 except Exception as e:
-    print(f"❌ Lỗi khi load model .h5: {str(e)}")
-    print("Gợi ý fix:")
-    print("- Downgrade TensorFlow: pip install tensorflow==2.15.0 (model train trên TF cũ, không compatible với TF 2.16+).")
-    print("- Nếu 'Unknown layer': Thêm custom_objects với layers từ lúc train.")
-    print("- Nếu HDF5 error: Kiểm tra file corrupt.")
+    print(f"❌ Lỗi khi load model: {str(e)}")
     exit()
 
 # Lấy input size của model
