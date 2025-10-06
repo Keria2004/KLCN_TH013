@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Upload & Recognize Emotion</title>
+  </head>
+  <body>
+    <h1>Upload Image or Video</h1>
+    <form action="/upload" method="post" enctype="multipart/form-data">
+      <input type="file" name="file" accept="image/*,video/*" required />
+      <button type="submit">Upload & Detect</button>
+    </form>
+
+    <h2>Result:</h2>
+    <div id="result">
+      <!-- Kết quả sẽ hiện trực tiếp ở đây -->
+      <img id="image_result" style="max-width: 640px; display: none" />
+      <img id="video_result" style="max-width: 640px; display: none" src="" />
+    </div>
+
+    <script>
+      const form = document.querySelector("form");
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const fileInput = document.querySelector('input[name="file"]');
+        const file = fileInput.files[0];
+        const formData = new FormData();
+        formData.append("file", file);
+
+        const ext = file.name.split(".").pop().toLowerCase();
+        const response = await fetch("/upload", {
+          method: "POST",
+          body: formData,
+        });
+
+        if (["jpg", "jpeg", "png"].includes(ext)) {
+          const blob = await response.blob();
+          const img = document.getElementById("image_result");
+          img.src = URL.createObjectURL(blob);
+          img.style.display = "block";
+          document.getElementById("video_result").style.display = "none";
+        } else {
+          const videoImg = document.getElementById("video_result");
+          videoImg.src = "/upload_stream"; // Không dùng được trực tiếp, xem tiếp phần nâng cao
+          videoImg.style.display = "block";
+          document.getElementById("image_result").style.display = "none";
+        }
+      });
+    </script>
+  </body>
+</html>
